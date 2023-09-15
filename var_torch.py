@@ -19,7 +19,6 @@ from tool import load
 class Opt():
     cuda = False
     pretrained = 'expr/best.pth'
-    pretrained = r"C:\Users\Administrator\Desktop\fsdownload\best.pth"
     alphabet_path = 'utils/charactes_keys.txt'
     batchSize = 64
     nh = 256
@@ -28,7 +27,7 @@ class Opt():
     imgH = 32
     imgW = 100
     model_name = "crnnlite"
-    model_name = "svtr"
+
 
 opt = Opt()
 alphabet = get_charactes_keys(opt.alphabet_path)
@@ -66,4 +65,3 @@ def reason(lines):
 if __name__ == '__main__':
     img_path = "docs/35L3_1578456366900.jpg"
     preds_str = reason(img_path)
-    print(preds_str)
