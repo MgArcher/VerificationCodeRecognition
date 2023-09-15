@@ -8,26 +8,23 @@
 # version    ：python 3.6
 # Description：
 """
-import random
+
 import torch
-import torch.backends.cudnn as cudnn
+
 import torch.optim as optim
 import torch.utils.data
-from torch.autograd import Variable
-import numpy as np
-import os
-from tqdm import tqdm
 
-
-from utils import utils
-from utils.dataloader import CaptchaDataset, get_charactes_keys
 import models.crnn as crnn
 from models.crnn_lite import CrnnLite
-from utils import utils_lr
+from models.model_svtr import Model as ModelSvtr
+
 
 
 def load_model(opt, alphabet, model_name):
-    device = torch.device('cuda')
+    if opt.cuda is True:
+        device = torch.device('cuda')
+    else:
+        device = torch.device('cpu')
     # 模型
     nclass = len(alphabet) + 1
 
@@ -35,13 +32,15 @@ def load_model(opt, alphabet, model_name):
         model = CrnnLite(opt.imgH, opt.nc, nclass, opt.nh)
     elif model_name == "crnn":
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
+    elif model_name == "svtr":
+        model = ModelSvtr(imgh=opt.imgH, num_class=nclass, input_channel=opt.nc, device=device)
     else:
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
     if opt.pretrained != '':
         print('loading pretrained model from %s' % opt.pretrained)
         state_dict = torch.load(opt.pretrained)
         model.load_state_dict(state_dict, strict=False)
-    print(model)
+    # print(model)
     model = model.to(device)
     return model
 

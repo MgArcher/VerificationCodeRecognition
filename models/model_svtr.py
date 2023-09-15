@@ -52,13 +52,23 @@ class Model(nn.Module):
         if self.bilstm:
             x = self.seq(x)
         pred = self.prediction(x.contiguous())
+        pred = pred.permute(1, 0, 2)
         return pred
 
 
 if __name__ == '__main__':
-    model = Model()
+
+    imgH=32
+    nc=3
+    nclass=37
+    nh= 256
+    device = torch.device('cuda')
+    model = Model(imgh=imgH, num_class=nclass, input_channel=nc, device=device)
+    model = model.to(device)
+
 
     sample = torch.rand([4, 3, 32, 100])
+    sample = sample.to(device)
     out = model(sample)
     print("Number of parameters: ", sum([p.numel() for p in model.parameters() if p.requires_grad]))
     print(out.shape)

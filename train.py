@@ -41,6 +41,7 @@ class Opt():
     beta1 = 0.5
     optimizer_type = "Adam"
     model_name = "crnnlite"
+    model_name = "svtr"
     manualSeed = 1234
 
 opt = Opt()

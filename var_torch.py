@@ -12,24 +12,29 @@ import torch
 import numpy as np
 from PIL import Image
 
-import models.crnn as crnn
+from utils.dataloader import get_charactes_keys
 from utils import utils
+from tool import load
 
+class Opt():
+    cuda = False
+    pretrained = 'expr/best.pth'
+    pretrained = r"C:\Users\Administrator\Desktop\fsdownload\best.pth"
+    alphabet_path = 'utils/charactes_keys.txt'
+    batchSize = 64
+    nh = 256
+    nc = 3
+    workers = 0
+    imgH = 32
+    imgW = 100
+    model_name = "crnnlite"
+    model_name = "svtr"
 
-model_path = r'C:\Users\Administrator\Desktop\fsdownload\model_36.pth'
-img_path = "docs/IN33.jpg"
-alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
-device = torch.device('cpu')
-imgH = 32
-nc = 3
-nclass = len(alphabet) + 1
-nh = 256
-input_shape = [imgH, 80]
-
-model = crnn.CRNN(32, 3, len(alphabet) + 1, 256)
-model.load_state_dict(torch.load(model_path, map_location=device))
-model = model.to(device)
+opt = Opt()
+alphabet = get_charactes_keys(opt.alphabet_path)
+model = load.load_model(opt, alphabet, opt.model_name)
 model = model.eval()
+
 converter = utils.strLabelConverter(alphabet)
 
 
@@ -45,6 +50,7 @@ def open_image(file, input_shape):
 
 
 def reason(lines):
+    input_shape = [32, 80]
     image = open_image(lines, input_shape)
     image = np.array(image).astype(np.float32) / 255.0
     photo = torch.from_numpy(np.expand_dims(np.transpose(image, (2, 0, 1)), 0)).type(torch.FloatTensor)
@@ -58,5 +64,6 @@ def reason(lines):
 
 
 if __name__ == '__main__':
+    img_path = "docs/35L3_1578456366900.jpg"
     preds_str = reason(img_path)
     print(preds_str)

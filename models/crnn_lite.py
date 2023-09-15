@@ -130,7 +130,7 @@ if __name__ == '__main__':
     import torch
     imgH=32
     nc=3
-    nclass=36
+    nclass=37
     nh= 256
     crnn = CrnnLite(imgH, nc, nclass, nh)
     img = torch.rand([4, 3, 32, 100])
