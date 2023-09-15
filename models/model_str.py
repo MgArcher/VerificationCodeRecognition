@@ -54,10 +54,11 @@ class Model(nn.Module):
         pred = self.prediction(x.contiguous())
         return pred
 
+
 if __name__ == '__main__':
     model = Model()
 
-    sample = torch.rand([1, 3, 32, 300])
+    sample = torch.rand([4, 3, 32, 100])
     out = model(sample)
     print("Number of parameters: ", sum([p.numel() for p in model.parameters() if p.requires_grad]))
     print(out.shape)
