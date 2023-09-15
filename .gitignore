@@ -1,0 +1,4 @@
+#过滤文件夹Debug,Release,obj
+data/jiandan
+data/jiandan_test
+expr/
