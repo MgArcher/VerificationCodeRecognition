@@ -20,6 +20,7 @@ from tool import load
 class Opt():
     cuda = False
     pretrained = 'expr/best_expr.pth'
+    pretrained = 'expr/best.pth'
     alphabet_path = 'tool/charactes_keys.txt'
 
     nh = 256
@@ -36,11 +37,10 @@ model = load.load_model(opt, alphabet, opt.model_name)
 model = model.eval()
 
 
-def open_image(file, input_shape):
+def open_image(file, h=32):
     out = Image.open(file)
     # 改变大小 并保证其不失真
     out = out.convert('RGB')
-    h, w = input_shape
     img_w, img_h = out.size
     widht = int(img_w * (h / img_h))
     out = out.resize((widht, h), 1)
@@ -48,8 +48,7 @@ def open_image(file, input_shape):
 
 
 def reason(lines):
-    input_shape = [32, 80]
-    image = open_image(lines, input_shape)
+    image = open_image(lines, 32)
     image = np.array(image).astype(np.float32) / 255.0
     photo = torch.from_numpy(np.expand_dims(np.transpose(image, (2, 0, 1)), 0)).type(torch.FloatTensor)
     preds = model(photo)

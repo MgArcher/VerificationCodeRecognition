@@ -32,7 +32,7 @@ class Opt():
     expr_dir = 'expr'
 
     nepoch = 40
-    batchSize = 64
+    batchSize = 2
     nh = 256
     nc = 3
     workers = 0

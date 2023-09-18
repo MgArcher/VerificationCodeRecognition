@@ -90,7 +90,7 @@ converter = utils.strLabelConverter(alphabet)
 acc = 0
 for epoch in range(1, opt.nepoch + 1):
     # 每代修改学习率
-    utils_lr.set_optimizer_lr(optimizer, lr_scheduler_func, epoch)
+    utils_lr.set_optimizer_lr(optimizer, lr_scheduler_func, epoch + 1)
     # 训练
     num_iterations = len(train_loader)
     pbar = tqdm(total=num_iterations, desc=f'Train student Epoch {epoch}/{opt.nepoch}', postfix=dict, mininterval=0.3)

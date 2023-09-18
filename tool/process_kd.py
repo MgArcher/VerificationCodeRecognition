@@ -12,7 +12,8 @@ import torch
 import torch.utils.data
 
 from utils import utils_lr
-from tool.imizer import get_acc
+from tool.process import get_acc
+
 
 def fit_epoch(gen, model, criterion, optimizer,converter,device, teacher_model, criterion_kd, alpha, pbar=None):
     teacher_model = teacher_model.train()
@@ -30,7 +31,7 @@ def fit_epoch(gen, model, criterion, optimizer,converter,device, teacher_model, 
         preds = preds.cpu()
         teacher_preds = teacher_preds.cpu()
         cost = criterion(preds, text, preds_size, length)
-        loss_soft = criterion_kd(preds.view(-1, 37), teacher_preds.view(-1, 37))
+        loss_soft = criterion_kd(preds.view(-1, preds.shape[-1]), teacher_preds.view(-1, preds.shape[-1]))
         cost = (1- alpha) * loss_soft + alpha * cost
         cost.backward()
         optimizer.step()
