@@ -34,21 +34,14 @@ def fit_epoch(gen, model, criterion, optimizer, converter, device, pbar):
     total_accuracy = 0
     for iteration, batch in enumerate(gen):
         image, label = batch
-        batch_size = image.size(0)
         text, length = converter.encode(label)
         image = image.to(device)
-        # 清除梯度
         optimizer.zero_grad()
-        # 前向传播
         preds = model(image)
-        # 计算损失
-        preds_size = Variable(torch.IntTensor([preds.size(0)] * batch_size))
+        preds_size = torch.IntTensor([preds.shape[0]] * preds.shape[1])
         preds = preds.cpu()
-
         cost = criterion(preds, text, preds_size, length)
-        # 反向传播
         cost.backward()
-        # 更新模型参数
         optimizer.step()
 
         with torch.no_grad():
@@ -72,11 +65,10 @@ def val(gen, model, criterion, converter, device, pbar=None):
     val_acc = 0
     for iteration, batch in enumerate(gen):
         image, label = batch
-        batch_size = image.size(0)
         text, length = converter.encode(label)
         image = image.to(device)
         preds = model(image)
-        preds_size = Variable(torch.IntTensor([preds.size(0)] * batch_size))
+        preds_size = torch.IntTensor([preds.shape[0]] * preds.shape[1])
         preds = preds.cpu()
         cost = criterion(preds, text, preds_size, length)
 

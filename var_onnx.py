@@ -8,6 +8,7 @@
 # version    ：python 3.6
 # Description：
 """
+import time
 from PIL import Image
 import onnxruntime
 import numpy as np
@@ -59,9 +60,11 @@ class CaptchaONNX(object):
 
 
 if __name__ == '__main__':
-    pre_onnx_path = "expr/best.onnx"
+    pre_onnx_path = "expr/best_expr.onnx"
     keys_path = "utils/charactes_keys.txt"
     pre = CaptchaONNX(pre_onnx_path, keys_path=keys_path, providers=['CPUExecutionProvider'])
     img_path = "docs/35L3_1578456366900.jpg"
-    large_img = pre.reason(img_path)
-    print(large_img)
+    s = time.time()
+    preds_str = pre.reason(img_path)
+    print(f"识别结果：{preds_str}，推理耗时：{round((time.time() - s)*1000, 2)}ms")
+

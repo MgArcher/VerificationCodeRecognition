@@ -175,20 +175,12 @@ class PPLCNet(nn.Module):
 
     def forward(self, x):
         x = self.features(x)
-        print(x.shape)
         x = self.avgpool(x)
-        print(x.shape)
         x = self.fc(x)
-        print(x.shape)
         x = self.hwish(x)
-        print(x.shape)
         x = self.dropout(x)
-        print(x.shape)
         x = x.view(x.size(0), -1)
-        print(x.shape)
         x = self.classifier(x)
-        print(x.shape)
-
         return x
 
     def _initialize_weights(self):

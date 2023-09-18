@@ -20,13 +20,12 @@
 # Description：
 """
 import torch
-import models.crnn as crnn
-from models.crnn_lite import CrnnLite
+from tool.load import load_model
 
 
 class Opt():
-    model_path = "expr/best.pth"
-    export_onnx_file = "expr/best.onnx"
+    pretrained = "expr/best_expr.pth"
+    export_onnx_file = "expr/best_expr.onnx"
     alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
     nh = 256
     nc = 3
@@ -34,20 +33,16 @@ class Opt():
     imgH = 32
     imgW = 100
     lite_model = True
+    model_name = 'crnnlite'
+    cuda = False
 
 
 opt = Opt()
 sample = torch.rand([1, opt.nc, opt.imgH, opt.imgW])
-model_path = opt.model_path
 export_onnx_file = opt.export_onnx_file
 alphabet = opt.alphabet
-device = torch.device('cpu')
 nclass = len(alphabet) + 1
-if opt.lite_model:
-    model = CrnnLite(opt.imgH, opt.nc, nclass, opt.nh)
-else:
-    model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
-model.load_state_dict(torch.load(model_path, map_location=device))
+model = load_model(opt, alphabet, opt.model_name)
 model = model.eval()
 
 

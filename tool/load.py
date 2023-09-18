@@ -16,7 +16,8 @@ import torch.utils.data
 
 import models.crnn as crnn
 from models.crnn_lite import CrnnLite
-from models.model_svtr import Model as ModelSvtr
+from models.model_svtr import Model as SVTRModel
+from models.model_ptnn import Model as PTNNMode
 
 
 
@@ -33,7 +34,9 @@ def load_model(opt, alphabet, model_name):
     elif model_name == "crnn":
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
     elif model_name == "svtr":
-        model = ModelSvtr(imgh=opt.imgH, num_class=nclass, input_channel=opt.nc, device=device)
+        model = SVTRModel(imgh=opt.imgH, num_class=nclass, input_channel=opt.nc, device=device)
+    elif model_name == "ptnn":
+        model = PTNNMode(num_class=nclass, hidden_size=opt.nh, device=device)
     else:
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
     if opt.pretrained != '':

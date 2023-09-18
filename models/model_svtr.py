@@ -67,7 +67,7 @@ if __name__ == '__main__':
     model = model.to(device)
 
 
-    sample = torch.rand([4, 3, 32, 100])
+    sample = torch.rand([4, 3, 32, 200])
     sample = sample.to(device)
     out = model(sample)
     print("Number of parameters: ", sum([p.numel() for p in model.parameters() if p.requires_grad]))

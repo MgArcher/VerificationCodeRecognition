@@ -1,9 +1,5 @@
 import math
-import os
-import random
 from functools import partial
-from random import shuffle
-
 import numpy as np
 from PIL import Image
 

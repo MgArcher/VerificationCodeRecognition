@@ -15,6 +15,14 @@
 ```json
 trainRoot = r"data/jiandan"  
 valRoot = r"data/jiandan_test"  
+
+
+# 自定义训练集
+方式一
+
+方式二
+
+
 ```
 运行train.py
 
@@ -25,3 +33,8 @@ valRoot = r"data/jiandan_test"
 运行 var_onnx.py
 
 # 实现原理
+
+
+# 参考文档
+https://github.com/DayBreak-u/chineseocr_lite/tree/master
+https://github.com/meijieru/crnn.pytorch

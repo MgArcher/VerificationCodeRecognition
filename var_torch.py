@@ -8,6 +8,7 @@
 # version    ：python 3.6
 # Description：
 """
+import time
 import torch
 import numpy as np
 from PIL import Image
@@ -18,7 +19,7 @@ from tool import load
 
 class Opt():
     cuda = False
-    pretrained = 'expr/best.pth'
+    pretrained = 'expr/best_expr.pth'
     alphabet_path = 'utils/charactes_keys.txt'
     batchSize = 64
     nh = 256
@@ -31,10 +32,9 @@ class Opt():
 
 opt = Opt()
 alphabet = get_charactes_keys(opt.alphabet_path)
+converter = utils.strLabelConverter(alphabet)
 model = load.load_model(opt, alphabet, opt.model_name)
 model = model.eval()
-
-converter = utils.strLabelConverter(alphabet)
 
 
 def open_image(file, input_shape):
@@ -60,8 +60,11 @@ def reason(lines):
         raw_pred = converter.decode(pred.data, raw=True)
         sim_pred = converter.decode(pred.data, raw=False)
         print('%-20s => %-20s' % (raw_pred, sim_pred))
+        return sim_pred
 
 
 if __name__ == '__main__':
     img_path = "docs/35L3_1578456366900.jpg"
+    s = time.time()
     preds_str = reason(img_path)
+    print(f"识别结果：{preds_str}，推理耗时：{round((time.time() - s)*1000, 2)}ms")

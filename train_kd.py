@@ -10,15 +10,15 @@
 """
 import random
 import torch.backends.cudnn as cudnn
-import torch.utils.data
+import torch
 import numpy as np
 import os
 from tqdm import tqdm
 
 from utils import utils
-from utils.dataloader import CaptchaDataset, get_charactes_keys
+from utils import dataloader
 from utils import utils_lr
-from tool import load, imizer,imizer_kd
+from tool import load, process, process_kd
 
 class Opt():
     trainRoot = r"data/jiandan"
@@ -57,15 +57,15 @@ torch.manual_seed(opt.manualSeed)
 cudnn.benchmark = True
 
 # 训练集
-alphabet = get_charactes_keys(opt.alphabet_path)
-train_dataset = CaptchaDataset(opt.trainRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
+alphabet = dataloader.get_charactes_keys(opt.alphabet_path)
+train_dataset = dataloader.CaptchaDataset(opt.trainRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
 sampler = None
 train_loader = torch.utils.data.DataLoader(
     train_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),
     )
-test_dataset = CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
+test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
 test_loader = torch.utils.data.DataLoader(
     test_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
@@ -94,12 +94,12 @@ for epoch in range(1, opt.nepoch + 1):
     # 训练
     num_iterations = len(train_loader)
     pbar = tqdm(total=num_iterations, desc=f'Train student Epoch {epoch}/{opt.nepoch}', postfix=dict, mininterval=0.3)
-    imizer_kd.fit_epoch(train_loader, model, criterion, optimizer, converter, device, teacher_model, criterion_kd, opt.alpha, pbar)
+    process_kd.fit_epoch(train_loader, model, criterion, optimizer, converter, device, teacher_model, criterion_kd, opt.alpha, pbar)
     pbar.close()
     # 验证
     num_val = len(test_loader)
     pbar = tqdm(total=num_val, desc=f'Validation student Epoch {epoch}/{opt.nepoch}', postfix=dict, mininterval=0.3)
-    val_acc = imizer.val(test_loader, model, criterion, converter, device, pbar)
+    val_acc = process.val(test_loader, model, criterion, converter, device, pbar)
     pbar.close()
     # 保存模型
     torch.save(model.state_dict(), os.path.join(opt.expr_dir, f"model_{epoch}.pth"))

@@ -22,26 +22,18 @@ def fit_epoch(gen, model, criterion, optimizer,converter,device, teacher_model, 
     total_accuracy = 0
     for iteration, batch in enumerate(gen):
         image, label = batch
-        batch_size = image.size(0)
         text, length = converter.encode(label)
         image = image.to(device)
-        # 清除梯度
         optimizer.zero_grad()
-        # 前向传播
-        # 分别使用学生模型和教师模型对输入数据进行计算
         teacher_preds = teacher_model(image)
         preds = model(image)
-        # 计算损失
-        preds_size = Variable(torch.IntTensor([preds.size(0)] * batch_size))
+        preds_size = torch.IntTensor([preds.shape[0]] * preds.shape[1])
         preds = preds.cpu()
         teacher_preds = teacher_preds.cpu()
         cost = criterion(preds, text, preds_size, length)
-        # 计算学生模型预测结果和教师模型预测结果之间的KL散度
         loss_soft = criterion_kd(preds.view(-1, 37), teacher_preds.view(-1, 37))
         cost = (1- alpha) * loss_soft + alpha * cost
-        # 反向传播
         cost.backward()
-        # 更新模型参数
         optimizer.step()
 
         with torch.no_grad():
