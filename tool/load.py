@@ -15,7 +15,7 @@ import torch.optim as optim
 import torch.utils.data
 
 import models.crnn as crnn
-from models.crnn_lite import CrnnLite
+from models.crnn_lite import CRnn
 from models.model_svtr import Model as SVTRModel
 from models.model_ptnn import Model as PTNNMode
 
@@ -29,7 +29,7 @@ def load_model(opt, alphabet, model_name):
     nclass = len(alphabet) + 1
 
     if model_name == "crnnlite":
-        model = CrnnLite(opt.imgH, opt.nc, nclass, opt.nh)
+        model = CRnn(opt.imgH, opt.nc, nclass, opt.nh)
     elif model_name == "crnn":
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
     elif model_name == "svtr":

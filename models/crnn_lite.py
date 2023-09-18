@@ -1,13 +1,3 @@
-# !/usr/bin/env python
-# -*-coding:utf-8 -*-
-
-"""
-# File       : crnn_lite.py.py
-# Time       ：2023/9/14 17:04
-# Author     ：yujia
-# version    ：python 3.6
-# Description：
-"""
 import torch.nn as nn
 
 
@@ -27,13 +17,13 @@ class BidirectionalLSTM(nn.Module):
         return output
 
 
-class CrnnLite(nn.Module):
+class CRnn(nn.Module):
 
     def __init__(self, imgH, nc, nclass, nh, lstmFlag=True):
         """
         是否加入lstm特征层
         """
-        super(CrnnLite, self).__init__()
+        super(CRnn, self).__init__()
         assert imgH % 16 == 0, 'imgH has to be a multiple of 16'
 
         ks = [5, 3, 3, 3, 3, 3, 2]
@@ -125,14 +115,3 @@ class CrnnLite(nn.Module):
             output = output.view(T, b, -1)
 
         return output
-
-if __name__ == '__main__':
-    import torch
-    imgH=32
-    nc=3
-    nclass=37
-    nh= 256
-    crnn = CrnnLite(imgH, nc, nclass, nh)
-    img = torch.rand([4, 3, 32, 100])
-    x = crnn(img)
-    print(x.shape)
