@@ -17,7 +17,7 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader
 
 from utils import utils
-from utils import dataloader
+from tool import dataloader
 from utils import utils_lr
 from tool import load, process
 
@@ -28,7 +28,7 @@ class Opt():
     cuda = True
 
     pretrained = ''
-    alphabet_path = 'utils/charactes_keys.txt'
+    alphabet_path = 'tool/charactes_keys.txt'
     expr_dir = 'expr'
 
     nepoch = 40

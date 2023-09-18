@@ -16,7 +16,7 @@ import os
 from tqdm import tqdm
 
 from utils import utils
-from utils import dataloader
+from tool import dataloader
 from utils import utils_lr
 from tool import load, process, process_kd
 
@@ -26,7 +26,7 @@ class Opt():
     cuda = True
 
     pretrained = ''
-    alphabet_path = 'utils/charactes_keys.txt'
+    alphabet_path = 'tool/charactes_keys.txt'
     expr_dir = 'expr'
 
     nepoch = 40
