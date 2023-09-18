@@ -35,7 +35,7 @@ class Opt():
     batchSize = 64
     nh = 256
     nc = 3
-    workers = 4
+    workers = 0
     imgH = 32
     imgW = 100
 
@@ -89,7 +89,7 @@ converter = utils.strLabelConverter(alphabet)
 acc = 0
 for epoch in range(1, opt.nepoch + 1):
     # 每代修改学习率
-    utils_lr.set_optimizer_lr(optimizer, lr_scheduler_func, epoch)
+    utils_lr.set_optimizer_lr(optimizer, lr_scheduler_func, epoch + 1)
     # 训练
     num_iterations = len(train_loader)
     pbar = tqdm(total=num_iterations, desc=f'Train Epoch {epoch}/{opt.nepoch}', postfix=dict, mininterval=0.3)

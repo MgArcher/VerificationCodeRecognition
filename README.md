@@ -8,7 +8,7 @@
 # 请作者喝可乐**o(*￣︶￣*)o**
 ![Example Image](./docs/img_3.png)  
 # 使用流程
-#### 1、环境准备
+#### 环境准备
 ```shell
 python3.6以上  
 pip install -r requirements.txt
@@ -34,7 +34,7 @@ loading pretrained model from expr/best_expr.pth
 ----aa----qq----qq---hh------ => aqqh                
 识别结果：aqqh，推理耗时：31.91ms
 ```
-#### 部署
+#### onnx转换
 运行方式：
 ```shell
 python export.py
@@ -55,7 +55,7 @@ verbose: False, log level: Level.ERROR
 save model in : expr/best_expr.onnx
 ```
 将会在指定文件夹中看到生成了一个.onnx文件
-#### 部署后推理
+#### onnx推理
 运行方式：
 ```shell
 python var_onnx.py
@@ -90,6 +90,14 @@ python train.py
 class Opt():
     trainRoot = r"data/jiandan"  # 修改成你放入到data目录下的文件夹名称 这是训练集路径
     valRoot = r"data/jiandan_test" # 修改成你放入到data目录下的文件夹名称 这是测试集路径
+    cuda = True #是否使用gpu
+    pretrained = '' #模型继续训练 传入空则从头开始训练
+    alphabet_path = 'tool/charactes_keys.txt'#选择的字典
+    expr_dir = 'expr'#模型保存目录
+```
+运行结果：
+```
+识别结果：aqqh，推理耗时：8.0ms
 ```
 #### 自定义训练集
 方式一：按照原有数据集方式，将训练数据放入到data目录下，按照label_xx.jpg 方式命名，其中label为标签  
