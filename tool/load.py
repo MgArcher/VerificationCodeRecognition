@@ -40,7 +40,7 @@ def load_model(opt, alphabet, model_name):
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
     if opt.pretrained != '':
         print('loading pretrained model from %s' % opt.pretrained)
-        state_dict = torch.load(opt.pretrained)
+        state_dict = torch.load(opt.pretrained, map_location=device)
         model.load_state_dict(state_dict, strict=False)
     # print(model)
     model = model.to(device)

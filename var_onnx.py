@@ -37,7 +37,7 @@ class CaptchaONNX(object):
         h, w = input_shape
         img_w, img_h = out.size
         widht = int(img_w * (h / img_h))
-        out = out.resize((widht, h), Image.LANCZOS)
+        out = out.resize((widht, h), 1)
         return out
 
     def get_charactes_keys(self, path):
@@ -63,8 +63,7 @@ if __name__ == '__main__':
     pre_onnx_path = "expr/best_expr.onnx"
     keys_path = "utils/charactes_keys.txt"
     pre = CaptchaONNX(pre_onnx_path, keys_path=keys_path, providers=['CPUExecutionProvider'])
-    img_path = "docs/35L3_1578456366900.jpg"
+    img_path = "docs/AQQH_1578452834528.png"
     s = time.time()
     preds_str = pre.reason(img_path)
     print(f"识别结果：{preds_str}，推理耗时：{round((time.time() - s)*1000, 2)}ms")
-

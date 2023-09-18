@@ -59,7 +59,7 @@ def open_image(file, input_shape, nc):
     h, w = input_shape
     # widht = int(w * (opt.HEIGHT / h))
     # out = out.resize((widht, opt.HEIGHT), Image.ANTIALIAS)
-    out = out.resize((w, h), Image.ANTIALIAS)
+    out = out.resize((w, h), 1)
     if nc == 1:
         out = out.convert('L')
     return out

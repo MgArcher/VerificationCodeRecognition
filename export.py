@@ -19,7 +19,10 @@
 # version    ：python 3.6
 # Description：
 """
+
 import torch
+
+
 from tool.load import load_model
 
 
@@ -35,6 +38,7 @@ class Opt():
     lite_model = True
     model_name = 'crnnlite'
     cuda = False
+    sim = False
 
 
 opt = Opt()
@@ -61,3 +65,16 @@ torch.onnx.export(
           },  # 批处理变量
       }
       )
+
+if opt.sim:
+    import onnx
+    from onnxruntime.quantization import quantize_dynamic
+    import onnxoptimizer
+    from onnxsim import simplify
+    # 量化、优化、折叠
+    sim__onnx_file = f"{export_onnx_file.replace('.onnx', '')}_sim.onnx"
+    quantize_dynamic(export_onnx_file, sim__onnx_file)
+    onnx_model = onnx.load(sim__onnx_file)
+    onnx_model = onnxoptimizer.optimize(onnx_model)
+    onnx_model, check = simplify(onnx_model)
+    onnx.save(onnx_model, sim__onnx_file)
