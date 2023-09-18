@@ -9,15 +9,15 @@
 # Description：
 """
 import torch.utils.data
-from utils import utils
-from utils.dataloader import CaptchaDataset, get_charactes_keys
 
-from tool import load, imizer
+from utils import utils
+from utils import dataloader
+from tool import load, process
 
 class Opt():
     valRoot = r"data/jiandan_test"
     cuda = True
-    pretrained = 'expr/best.pth'
+    pretrained = 'expr/best_expr.pth'
     alphabet_path = 'utils/charactes_keys.txt'
     batchSize = 64
     nh = 256
@@ -31,8 +31,8 @@ class Opt():
 opt = Opt()
 sampler = None
 device=torch.device('cuda')
-alphabet = get_charactes_keys(opt.alphabet_path)
-test_dataset = CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
+alphabet = dataloader.get_charactes_keys(opt.alphabet_path)
+test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
 test_loader = torch.utils.data.DataLoader(
     test_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
@@ -45,5 +45,5 @@ model = load.load_model(opt, alphabet, opt.model_name)
 criterion = torch.nn.CTCLoss()
 # 解码器
 converter = utils.strLabelConverter(alphabet)
-val_acc = imizer.val(test_loader, model, criterion, converter, device)
+val_acc = process.val(test_loader, model, criterion, converter, device)
 print("val_acc:", val_acc)

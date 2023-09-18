@@ -4,6 +4,15 @@
 简单易用的验证码识别
 包含整个流程
 
+
+
+# 环境准备
+python3.6以上
+pip install -r requirements.txt
+
+
+
+
 #数据集下载
 数据集一 https://wwm.lanzoum.com/itczd0b5z3yj  
 将压缩包放入到data中解压，在data目录下新建一个文件夹，剪切1000张图片到新文件夹中制作成验证集

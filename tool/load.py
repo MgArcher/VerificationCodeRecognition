@@ -20,7 +20,6 @@ from models.model_svtr import Model as SVTRModel
 from models.model_ptnn import Model as PTNNMode
 
 
-
 def load_model(opt, alphabet, model_name):
     if opt.cuda is True:
         device = torch.device('cuda')

@@ -44,7 +44,7 @@ def open_image(file, input_shape):
     h, w = input_shape
     img_w, img_h = out.size
     widht = int(img_w * (h / img_h))
-    out = out.resize((widht, h), Image.ANTIALIAS)
+    out = out.resize((widht, h), Image.LANCZOS)
     return out
 
 

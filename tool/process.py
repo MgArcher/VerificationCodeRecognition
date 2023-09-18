@@ -10,7 +10,6 @@
 """
 import torch
 import torch.utils.data
-from torch.autograd import Variable
 
 from utils import utils_lr
 
