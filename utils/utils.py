@@ -4,7 +4,7 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
-import collections
+from collections.abc import Iterable
 
 
 class strLabelConverter(object):
@@ -45,7 +45,7 @@ class strLabelConverter(object):
                 for char in text
             ]
             length = [len(text)]
-        elif isinstance(text, collections.Iterable):
+        elif isinstance(text, Iterable):
             length = [len(s) for s in text]
             text = ''.join(text)
             text, _ = self.encode(text)

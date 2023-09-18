@@ -8,7 +8,9 @@
 # version    ：python 3.6
 # Description：
 """
-import torch.utils.data
+import torch
+from torch.utils.data import DataLoader
+
 
 from utils import utils
 from utils import dataloader
@@ -30,10 +32,13 @@ class Opt():
 
 opt = Opt()
 sampler = None
-device=torch.device('cuda')
+if opt.cuda:
+    device = torch.device('cuda')
+else:
+    device = torch.device('cpu')
 alphabet = dataloader.get_charactes_keys(opt.alphabet_path)
 test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
-test_loader = torch.utils.data.DataLoader(
+test_loader = DataLoader(
     test_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),

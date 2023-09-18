@@ -14,6 +14,7 @@ import torch
 import numpy as np
 import os
 from tqdm import tqdm
+from torch.utils.data import DataLoader
 
 from utils import utils
 from utils import dataloader
@@ -49,7 +50,10 @@ opt = Opt()
 
 if not os.path.exists(opt.expr_dir):
     os.makedirs(opt.expr_dir)
-device=torch.device('cuda')
+if opt.cuda:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+else:
+    device = torch.device('cpu')
 # 随机种子
 random.seed(opt.manualSeed)
 np.random.seed(opt.manualSeed)
@@ -60,13 +64,13 @@ cudnn.benchmark = True
 alphabet = dataloader.get_charactes_keys(opt.alphabet_path)
 train_dataset = dataloader.CaptchaDataset(opt.trainRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
 sampler = None
-train_loader = torch.utils.data.DataLoader(
+train_loader = DataLoader(
     train_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),
     )
 test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
-test_loader = torch.utils.data.DataLoader(
+test_loader = DataLoader(
     test_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),
