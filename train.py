@@ -31,8 +31,8 @@ class Opt():
     alphabet_path = 'tool/charactes_keys.txt'
     expr_dir = 'expr'
 
-    nepoch = 40
-    batchSize = 2
+    nepoch = 100
+    batchSize = 64
     nh = 256
     nc = 3
     workers = 0
@@ -46,6 +46,7 @@ class Opt():
     model_name = "crnnlite"
     # model_name = "ptnn"
     manualSeed = 1234
+
 
 opt = Opt()
 
@@ -90,7 +91,7 @@ converter = utils.strLabelConverter(alphabet)
 acc = 0
 for epoch in range(1, opt.nepoch + 1):
     # 每代修改学习率
-    utils_lr.set_optimizer_lr(optimizer, lr_scheduler_func, epoch + 1)
+    utils_lr.set_optimizer_lr(optimizer, lr_scheduler_func, epoch)
     # 训练
     num_iterations = len(train_loader)
     pbar = tqdm(total=num_iterations, desc=f'Train Epoch {epoch}/{opt.nepoch}', postfix=dict, mininterval=0.3)

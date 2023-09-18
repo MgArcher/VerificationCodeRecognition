@@ -20,6 +20,16 @@ from models.model_svtr import Model as SVTRModel
 from models.model_ptnn import Model as PTNNMode
 
 
+# 在CRNN上调用自定义权重初始化 ***很重要
+def weights_init(m):
+    classname = m.__class__.__name__
+    if classname.find('Conv') != -1:
+        m.weight.data.normal_(0.0, 0.02)
+    elif classname.find('BatchNorm') != -1:
+        m.weight.data.normal_(1.0, 0.02)
+        m.bias.data.fill_(0)
+
+
 def load_model(opt, alphabet, model_name):
     if opt.cuda is True:
         device = torch.device('cuda')
@@ -30,8 +40,10 @@ def load_model(opt, alphabet, model_name):
 
     if model_name == "crnnlite":
         model = CRnn(opt.imgH, opt.nc, nclass, opt.nh)
+        model.apply(weights_init)
     elif model_name == "crnn":
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
+        model.apply(weights_init)
     elif model_name == "svtr":
         model = SVTRModel(imgh=opt.imgH, num_class=nclass, input_channel=opt.nc, device=device)
     elif model_name == "ptnn":
