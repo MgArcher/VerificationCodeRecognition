@@ -1,8 +1,8 @@
 
 # 超简单易用的验证码识别
-示例图片: 
+**示例图片:**
 ![Example Image](./docs/AQQH_1578452834528.png)  
-识别结果：aqqh，推理耗时：11.97ms
+**识别结果：aqqh，推理耗时：11.97ms**
 # 免责声明
 **本项目旨在研究深度学习在验证码攻防上的应用。仅供学习交流使用，请勿用于非法用途，不得在任何商业使用，本人不承担任何法律责任。**
 # 请作者喝可乐**o(*￣︶￣*)o**
@@ -14,9 +14,11 @@ python3.6以上
 pip install -r requirements.txt
 ```
 #### 推理
+运行方式：
 ```shell
 python var_torch.py
 ```
+参数调整：
 ```python
 class Opt():
     cuda = False
@@ -26,20 +28,39 @@ class Opt():
 if __name__ == '__main__':
     img_path = "docs/AQQH_1578452834528.png" # 需要识别的图片
 ```
+运行结果：
+```
+loading pretrained model from expr/best_expr.pth
+----aa----qq----qq---hh------ => aqqh                
+识别结果：aqqh，推理耗时：31.91ms
+```
 #### 部署
+运行方式：
 ```shell
 python export.py
 ```
+参数调整：
 ```python
 class Opt():
     pretrained = "expr/best_expr.pth" # 需要转换的模型
     export_onnx_file = "expr/best_expr.onnx" # 转换后的模型
     alphabet_path = 'tool/charactes_keys.txt'# 选择的字典
 ```
+运行结果：
+```
+============== Diagnostic Run torch.onnx.export version 2.0.0+cpu ==============
+verbose: False, log level: Level.ERROR
+======================= 0 NONE 0 NOTE 0 WARNING 0 ERROR ========================
+
+save model in : expr/best_expr.onnx
+```
+将会在指定文件夹中看到生成了一个.onnx文件
 #### 部署后推理
+运行方式：
 ```shell
 python var_onnx.py
 ```
+参数调整：
 ```python
 if __name__ == '__main__':
     pre_onnx_path = "expr/best_expr.onnx"# 选择的模型
@@ -50,10 +71,15 @@ if __name__ == '__main__':
     preds_str = pre.reason(img_path) # 识别函数
     print(f"识别结果：{preds_str}，推理耗时：{round((time.time() - s)*1000, 2)}ms")
 ```
+运行结果：
+```
+识别结果：aqqh，推理耗时：8.0ms
+```
 #### 数据集
 [数据集一](https://wwm.lanzoum.com/itczd0b5z3yj)
 
 #### 训练
+运行方式：
 ```shell
 python train.py
 ```

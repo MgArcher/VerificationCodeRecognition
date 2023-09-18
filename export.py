@@ -64,6 +64,8 @@ torch.onnx.export(
       }
       )
 
+print("save model in :", export_onnx_file)
+
 if opt.sim:
     import onnx
     from onnxruntime.quantization import quantize_dynamic
