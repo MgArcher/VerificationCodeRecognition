@@ -2,3 +2,5 @@
 data/jiandan
 data/jiandan_test
 expr/
+.idea/
+__pycache__/
