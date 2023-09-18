@@ -35,7 +35,7 @@ class Opt():
     batchSize = 64
     nh = 256
     nc = 3
-    workers = 0
+    workers = 4
     imgH = 32
     imgW = 100
 

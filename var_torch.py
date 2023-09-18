@@ -13,18 +13,17 @@ import torch
 import numpy as np
 from PIL import Image
 
-from utils.dataloader import get_charactes_keys
+from tool.dataloader import get_charactes_keys
 from utils import utils
 from tool import load
 
 class Opt():
     cuda = False
     pretrained = 'expr/best_expr.pth'
-    alphabet_path = 'utils/charactes_keys.txt'
-    batchSize = 64
+    alphabet_path = 'tool/charactes_keys.txt'
+
     nh = 256
     nc = 3
-    workers = 0
     imgH = 32
     imgW = 100
     model_name = "crnnlite"

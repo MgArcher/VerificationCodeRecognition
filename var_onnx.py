@@ -61,7 +61,7 @@ class CaptchaONNX(object):
 
 if __name__ == '__main__':
     pre_onnx_path = "expr/best_expr.onnx"
-    keys_path = "utils/charactes_keys.txt"
+    keys_path = "tool/charactes_keys.txt"
     pre = CaptchaONNX(pre_onnx_path, keys_path=keys_path, providers=['CPUExecutionProvider'])
     img_path = "docs/AQQH_1578452834528.png"
     s = time.time()

@@ -19,23 +19,21 @@
 # version    ：python 3.6
 # Description：
 """
-
 import torch
 
-
 from tool.load import load_model
+from tool.dataloader import get_charactes_keys
 
 
 class Opt():
     pretrained = "expr/best_expr.pth"
     export_onnx_file = "expr/best_expr.onnx"
-    alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
+    alphabet_path = 'tool/charactes_keys.txt'
+
     nh = 256
     nc = 3
-    workers = 0
     imgH = 32
     imgW = 100
-    lite_model = True
     model_name = 'crnnlite'
     cuda = False
     sim = False
@@ -44,7 +42,7 @@ class Opt():
 opt = Opt()
 sample = torch.rand([1, opt.nc, opt.imgH, opt.imgW])
 export_onnx_file = opt.export_onnx_file
-alphabet = opt.alphabet
+alphabet = get_charactes_keys(opt.alphabet_path)
 nclass = len(alphabet) + 1
 model = load_model(opt, alphabet, opt.model_name)
 model = model.eval()
