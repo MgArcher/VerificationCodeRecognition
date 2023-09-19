@@ -14,6 +14,7 @@ def preprocess_input(x):
 
 def get_paths(path):
     def get_subfolders(folder):
+        yield folder
         for root, dirs, files in os.walk(folder):
             for dir in dirs:
                 yield os.path.join(root, dir)
