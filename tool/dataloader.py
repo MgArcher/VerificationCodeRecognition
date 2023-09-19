@@ -13,11 +13,14 @@ def preprocess_input(x):
 
 
 def get_paths(path):
-    paths = glob.glob(f'{path}/**.jpg') + glob.glob(f'{path}/**.png')
-    if not paths:
-        paths = glob.glob(f'{path}/*/**.jpg') + glob.glob(f'{path}/*/**.png')
-    if not paths:
-        paths = glob.glob(f'{path}/*/*/**.jpg') + glob.glob(f'{path}/*/*/**.png')
+    def get_subfolders(folder):
+        for root, dirs, files in os.walk(folder):
+            for dir in dirs:
+                yield os.path.join(root, dir)
+    paths = []
+    for subfolders in get_subfolders(path):
+        paths += glob.glob(f'{subfolders}/**.jpg') + glob.glob(f'{subfolders}/**.png')
+
     return paths
 
 
@@ -96,3 +99,7 @@ class CaptchaDataset(Dataset):
         image = preprocess_input(np.array(image).astype(np.float32))
         image = np.transpose(image, [2, 0, 1])
         return image, labels
+
+
+
+
