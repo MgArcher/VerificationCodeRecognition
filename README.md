@@ -84,12 +84,10 @@ if __name__ == '__main__':
 python train.py
 ```
 在运行前修改 train.py 中 trainRoot 和 valRoot ，将其修改为你下载的训练集和验证集。  
-可根据上方给的数据据下载，将压缩包放入到data中解压，在data目录下新建一个文件夹，
-剪切1000张图片到新文件夹中制作成验证集，其余数据作为训练集
+可根据上方给的数据据下载，将压缩包放入到data中解压
 ```python
 class Opt():
-    trainRoot = r"data/jiandan"  # 修改成你放入到data目录下的文件夹名称 这是训练集路径
-    valRoot = r"data/jiandan_test" # 修改成你放入到data目录下的文件夹名称 这是测试集路径
+    trainRoot = r"data"  # 修改成你放入到data目录下的文件夹名称 这是训练集路径
     cuda = True #是否使用gpu
     pretrained = '' #模型继续训练 传入空则从头开始训练
     alphabet_path = 'tool/charactes_keys.txt'#选择的字典

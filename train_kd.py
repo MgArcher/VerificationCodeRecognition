@@ -14,6 +14,7 @@ import torch
 import numpy as np
 import os
 from tqdm import tqdm
+from torch.utils.data import DataLoader
 
 from utils import utils
 from tool import dataloader
@@ -45,6 +46,7 @@ class Opt():
     manualSeed = 1234
     alpha = 0.1
 
+
 opt = Opt()
 
 if not os.path.exists(opt.expr_dir):
@@ -58,15 +60,15 @@ cudnn.benchmark = True
 
 # 训练集
 alphabet = dataloader.get_charactes_keys(opt.alphabet_path)
-train_dataset = dataloader.CaptchaDataset(opt.trainRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
+train_dataset = dataloader.CaptchaDataset(opt.trainRoot, [opt.imgH, opt.imgW], opt.nc)
 sampler = None
-train_loader = torch.utils.data.DataLoader(
+train_loader = DataLoader(
     train_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),
     )
-test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
-test_loader = torch.utils.data.DataLoader(
+test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], opt.nc)
+test_loader = DataLoader(
     test_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),
@@ -84,7 +86,6 @@ criterion = torch.nn.CTCLoss()
 criterion_kd = torch.nn.KLDivLoss(reduction='batchmean')#KL散度
 # 解码器
 converter = utils.strLabelConverter(alphabet)
-
 
 
 acc = 0

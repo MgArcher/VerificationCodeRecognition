@@ -23,10 +23,8 @@ from tool import load, process
 
 
 class Opt():
-    trainRoot = r"data/jiandan"
-    valRoot = r"data/jiandan_test"
+    trainRoot = r"data"
     cuda = True
-
     pretrained = ''
     alphabet_path = 'tool/charactes_keys.txt'
     expr_dir = 'expr'
@@ -44,8 +42,8 @@ class Opt():
     optimizer_type = "Adam"
 
     model_name = "crnnlite"
-    # model_name = "ptnn"
     manualSeed = 1234
+    train_ratio = 0.9
 
 
 opt = Opt()
@@ -64,14 +62,16 @@ cudnn.benchmark = True
 
 # 训练集
 alphabet = dataloader.get_charactes_keys(opt.alphabet_path)
-train_dataset = dataloader.CaptchaDataset(opt.trainRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
+lines, labels = dataloader.load_dataset(opt.trainRoot)
+train_lines, train_labels, val_lines, val_labels = dataloader.ratio_dataloader(lines, labels, opt.train_ratio, opt.batchSize)
+train_dataset = dataloader.CaptchaDataset([train_lines, train_labels], [opt.imgH, opt.imgW], opt.nc)
 sampler = None
 train_loader = DataLoader(
     train_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),
     )
-test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
+test_dataset = dataloader.CaptchaDataset([val_lines, val_labels], [opt.imgH, opt.imgW], opt.nc)
 test_loader = DataLoader(
     test_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,

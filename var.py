@@ -16,8 +16,9 @@ from utils import utils
 from tool import dataloader
 from tool import load, process
 
+
 class Opt():
-    valRoot = r"data/jiandan_test"
+    valRoot = r"data"
     cuda = True
     pretrained = 'expr/best_expr.pth'
     alphabet_path = 'tool/charactes_keys.txt'
@@ -37,7 +38,7 @@ if opt.cuda:
 else:
     device = torch.device('cpu')
 alphabet = dataloader.get_charactes_keys(opt.alphabet_path)
-test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], alphabet, opt.nc)
+test_dataset = dataloader.CaptchaDataset(opt.valRoot, [opt.imgH, opt.imgW], opt.nc)
 test_loader = DataLoader(
     test_dataset, batch_size=opt.batchSize,
     shuffle=True, sampler=sampler,

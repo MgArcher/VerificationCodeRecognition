@@ -20,7 +20,6 @@ from tool import load
 class Opt():
     cuda = False
     pretrained = 'expr/best_expr.pth'
-    pretrained = 'expr/best.pth'
     alphabet_path = 'tool/charactes_keys.txt'
 
     nh = 256

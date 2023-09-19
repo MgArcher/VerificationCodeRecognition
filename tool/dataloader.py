@@ -43,6 +43,18 @@ def load_dataset(dataset_path):
     return lines, labels
 
 
+def ratio_dataloader(lines, labels, train_ratio, batchSize):
+    num_train = int(len(lines) * (1 - train_ratio))
+    if num_train < batchSize:
+        print("数据集不足以划分训练集和验证集，训练集验证集返回相同的")
+        return lines, labels, lines, labels
+    train_lines = lines[num_train:]
+    train_labels = labels[num_train:]
+    val_lines = lines[:num_train]
+    val_labels = labels[:num_train]
+    return train_lines, train_labels, val_lines, val_labels
+
+
 def get_charactes_keys(path):
     charactes_keys = ""
     with open(path, 'r', encoding='utf-8') as f:
@@ -57,8 +69,6 @@ def open_image(file, input_shape, nc):
     # 改变大小 并保证其不失真
     out = out.convert('RGB')
     h, w = input_shape
-    # widht = int(w * (opt.HEIGHT / h))
-    # out = out.resize((widht, opt.HEIGHT), Image.ANTIALIAS)
     out = out.resize((w, h), 1)
     if nc == 1:
         out = out.convert('L')
@@ -66,12 +76,14 @@ def open_image(file, input_shape, nc):
 
 
 class CaptchaDataset(Dataset):
-    def __init__(self, dataset_path, input_shape,charactes_keys, nc):
-        lines, labels = load_dataset(dataset_path)
+    def __init__(self, dataset_path, input_shape, nc=3):
+        if isinstance(dataset_path, tuple) or isinstance(dataset_path, list):
+            lines, labels = dataset_path
+        else:
+            lines, labels = load_dataset(dataset_path)
         self.input_shape    = input_shape
         self.train_lines    = lines
         self.train_labels   = labels
-        self.charactes_keys = charactes_keys
         self.nc = nc
 
     def __len__(self):
