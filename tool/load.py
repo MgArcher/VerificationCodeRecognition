@@ -47,7 +47,7 @@ def load_model(opt, alphabet, model_name):
     elif model_name == "svtr":
         model = SVTRModel(imgh=opt.imgH, num_class=nclass, input_channel=opt.nc, device=device)
     elif model_name == "ptnn":
-        model = PTNNMode(num_class=nclass, hidden_size=opt.nh, device=device)
+        model = PTNNMode(num_class=nclass, hidden_size=int(opt.nh / 2))
     else:
         model = crnn.CRNN(opt.imgH, opt.nc, nclass, opt.nh)
     if opt.pretrained != '':

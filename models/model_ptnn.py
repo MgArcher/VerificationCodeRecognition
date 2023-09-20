@@ -12,31 +12,24 @@ import torch
 import torch.nn as nn
 
 from models.model_util import TPS_STN, ResNet50, BiLSTM, Transformer
-from models.pplcnet import PPLCNet_x0_25
+from models.pplcnet import PPLCNet
 
 
 class Model(nn.Module):
     def __init__(self,
                  num_class=37,
-                 hidden_size=64,
-                 device=torch.device('cpu')):
+                 hidden_size=128,
+                 ):
         super(Model, self).__init__()
         self.hidden_size = hidden_size
         self.num_class = num_class
-        self.fe = PPLCNet_x0_25(num_classes=1280)
+        self.fe = PPLCNet()
         self.prediction = Transformer(self.num_class, hidden_size)
-        self.device = device
-
-    def L(self, w):
-        return nn.Linear(1280, (int(w / 4) + 1) * self.hidden_size).to(self.device)
 
     def forward(self, x):
-        b, n, h, w = x.shape
         x = self.fe(x)
-        x = self.L(w)(x)
-        x = x.view(b, int(w / 4) + 1, self.hidden_size)
-        x = self.predic
-        tion(x.contiguous())
+        x = x.view(x.shape[0], -1, self.hidden_size)
+        x = self.prediction(x)
         x = x.permute(1, 0, 2)
         return x
 
