@@ -7,7 +7,9 @@
 **本项目旨在研究深度学习在验证码攻防上的应用。仅供学习交流使用，请勿用于非法用途，不得在任何商业使用，本人不承担任何法律责任。**
 # 请作者喝可乐**o(*￣︶￣*)o**
 ![Example Image](./docs/img_3.png)  
+
 # 使用流程
+**以下代码均可以直接执行，如有问题或需求欢迎各位在lssues中提问或联系邮件yj970814@163.com**
 #### 环境准备
 ```shell
 python3.6以上  
@@ -83,8 +85,8 @@ if __name__ == '__main__':
 ```shell
 python train.py
 ```
-在运行前修改 train.py 中 trainRoot 和 valRoot ，将其修改为你下载的训练集和验证集。  
-可根据上方给的数据据下载，将压缩包放入到data中解压
+在运行前修改 train.py 中 trainRoot，将其修改为你下载的训练集和验证集。  
+或可根据上方给的数据据下载，将压缩包放入到data中解压
 ```python
 class Opt():
     trainRoot = r"data"  # 修改成你放入到data目录下的文件夹名称 这是训练集路径
