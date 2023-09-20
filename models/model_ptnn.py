@@ -11,7 +11,7 @@
 import torch
 import torch.nn as nn
 
-from models.model_util import TPS_STN, ResNet50, BiLSTM, Transformer
+from models.model_util import Transformer
 from models.pplcnet import PPLCNet
 
 
